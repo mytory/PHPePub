@@ -285,7 +285,6 @@ class EPub {
             $this->chapterCount++;
 
             foreach ($chapter as $v) {
-                /** @noinspection PhpUnusedLocalVariableInspection */
                 if ($this->encodeHTML === true) {
                     $v = StringHelper::encodeHtml($v);
                 }
