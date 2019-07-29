@@ -33,5 +33,9 @@
         "classmap": [
             "src/lib.uuid.php"
         ]
+    },
+    "require-dev": {},
+    "scripts": {
+        "test": "php test.php"
     }
 }
