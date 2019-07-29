@@ -292,8 +292,9 @@ class Ncx {
 
         if (sizeof($this->meta)) {
             foreach ($this->meta as $metaEntry) {
-                list($name, $content) = each($metaEntry);
-                $ncx .= "\t\t<meta name=\"" . $name . "\" content=\"" . $content . "\" />\n";
+                foreach ($metaEntry as $name => $content) {
+                    $ncx .= "\t\t<meta name=\"" . $name . "\" content=\"" . $content . "\" />\n";
+                }
             }
         }
 

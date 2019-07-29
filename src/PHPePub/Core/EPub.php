@@ -284,10 +284,8 @@ class EPub {
             $partCount = 0;
             $this->chapterCount++;
 
-            $oneChapter = each($chapter);
-            while ($oneChapter) {
+            foreach ($chapter as $v) {
                 /** @noinspection PhpUnusedLocalVariableInspection */
-                list($k, $v) = $oneChapter;
                 if ($this->encodeHTML === true) {
                     $v = StringHelper::encodeHtml($v);
                 }
@@ -301,8 +299,6 @@ class EPub {
                 $this->extractIdAttributes($partName, $v);
 
                 $this->opf->addItemRef($partName);
-
-                $oneChapter = each($chapter);
             }
             $partName = $name . "_1." . $extension;
             $navPoint = new NavPoint(StringHelper::decodeHtmlEntities($chapterName), $partName, $partName);
