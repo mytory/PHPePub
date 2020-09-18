@@ -126,6 +126,7 @@ class EPub {
     private $tocCssFileName = null;
     private $fileList = array();
     private $writingDirection = EPub::DIRECTION_LEFT_TO_RIGHT;
+    private $pageProgressionDirection = EPub::DIRECTION_LEFT_TO_RIGHT;
     private $languageCode = 'en';
     private $dateformat = 'Y-m-d\TH:i:s.000000P';
     private $dateformatShort = 'Y-m-d';
@@ -150,9 +151,10 @@ class EPub {
      * @param string $languageCode
      * @param string $writingDirection
      */
-    function __construct($bookVersion = EPub::BOOK_VERSION_EPUB2, $languageCode = 'en', $writingDirection = EPub::DIRECTION_LEFT_TO_RIGHT) {
+    function __construct($bookVersion = EPub::BOOK_VERSION_EPUB2, $languageCode = 'en', $writingDirection = EPub::DIRECTION_LEFT_TO_RIGHT, $pageProgressionDirection = Epub::DIRECTION_LEFT_TO_RIGHT) {
         $this->bookVersion = $bookVersion;
         $this->writingDirection = $writingDirection;
+        $this->pageProgressionDirection = $pageProgressionDirection;
         $this->languageCode = $languageCode;
 
         $this->log = new Logger('EPub', $this->isLogging);
@@ -195,7 +197,7 @@ class EPub {
         $this->zip->addDirectory('META-INF');
 
         $this->ncx = new Ncx(null, null, null, $this->languageCode, $this->writingDirection);
-        $this->opf = new Opf();
+        $this->opf = new Opf("BookId", $this->bookVersion, $this->pageProgressionDirection);
 
         $this->chapterCount = 0;
 

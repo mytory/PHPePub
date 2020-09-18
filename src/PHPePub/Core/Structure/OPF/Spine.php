@@ -11,14 +11,16 @@ namespace PHPePub\Core\Structure\OPF;
 class Spine {
     private $itemrefs = array();
     private $toc = null;
+    private $pageProgressionDirection = null;
 
     /**
      * Class constructor.
      *
      * @param string $toc
      */
-    function __construct($toc = "ncx") {
+    function __construct($toc = "ncx", $pageProgressionDirection = EPub::DIRECTION_LEFT_TO_RIGHT) {
         $this->setToc($toc);
+        $this->setPageProgressionDirection($pageProgressionDirection);
     }
 
     /**
@@ -32,12 +34,21 @@ class Spine {
     }
 
     /**
+     * setPageProgressionDirection function
+     *
+     * @param string $pageProgressionDirection
+     */
+    function setPageProgressionDirection($pageProgressionDirection) {
+        $this->pageProgressionDirection = is_string($pageProgressionDirection) ? trim($pageProgressionDirection) : EPub::DIRECTION_LEFT_TO_RIGHT;
+    }
+
+    /**
      * Class destructor
      *
      * @return void
      */
     function __destruct() {
-        unset($this->itemrefs, $this->toc);
+        unset($this->itemrefs, $this->toc, $this->pageProgressionDirection);
     }
 
     /**
@@ -63,7 +74,7 @@ class Spine {
      * @return string
      */
     function finalize() {
-        $spine = "\n\t<spine toc=\"" . $this->toc . "\">\n";
+        $spine = "\n\t<spine toc=\"" . $this->toc . "\" page-progression-direction=\"" . $this->pageProgressionDirection . "\">\n";
         foreach ($this->itemrefs as $itemref) {
             /** @var $itemref ItemRef */
             $spine .= $itemref->finalize();
