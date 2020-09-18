@@ -39,6 +39,7 @@ class Opf {
 
     private $bookVersion = EPub::BOOK_VERSION_EPUB2;
     private $ident = "BookId";
+    private $pageProgressionDirection = EPub::DIRECTION_LEFT_TO_RIGHT;
 
     public $date = null;
 
@@ -60,12 +61,13 @@ class Opf {
      * @param string $ident
      * @param string $bookVersion
      */
-    function __construct($ident = "BookId", $bookVersion = EPub::BOOK_VERSION_EPUB2) {
+    function __construct($ident = "BookId", $bookVersion = EPub::BOOK_VERSION_EPUB2, $pageProgressionDirection = EPub::DIRECTION_LEFT_TO_RIGHT) {
         $this->setIdent($ident);
         $this->setVersion($bookVersion);
+        $this->setPageProgressionDirection($pageProgressionDirection);
         $this->metadata = new Metadata();
         $this->manifest = new Manifest();
-        $this->spine = new Spine();
+        $this->spine = new Spine("ncx", $this->pageProgressionDirection);
         $this->guide = new Guide();
     }
 
@@ -86,6 +88,10 @@ class Opf {
      */
     function setVersion($bookVersion) {
         $this->bookVersion = is_string($bookVersion) ? trim($bookVersion) : EPub::BOOK_VERSION_EPUB2;
+    }
+
+    function setPageProgressionDirection($pageProgressionDirection) {
+        $this->pageProgressionDirection = is_string($pageProgressionDirection) ? trim($pageProgressionDirection) : EPub::DIRECTION_LEFT_TO_RIGHT;
     }
 
     function isEPubVersion2() {
